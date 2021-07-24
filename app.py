@@ -66,7 +66,7 @@ def index():
                 reviews.append(mydict)
             return render_template('results.html', reviews=reviews) # showing the review to the user
         except:
-            return 'something is wrong'
+            return 'something is wrong in the process'
 
 
 if __name__ == "__main__":

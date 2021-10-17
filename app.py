@@ -16,12 +16,12 @@ def index():
     if request.method == 'POST':
         searchString = request.form['content'].replace(" ","") # obtaining the search string entered in the form
         try:
-            SwiggyUrl = "https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=" + searchString # preparing the URL to search the product on flipkart
-            uClient = uReq(SwiggyUrl) # requesting the webpage from the internet
-            SwiggyPage = uClient.read()# reading the webpage
+            ebayUrl = "https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=" + searchString # preparing the URL to search the product on flipkart
+            uClient = uReq(ebayUrl) # requesting the webpage from the internet
+            EbayPage = uClient.read()# reading the webpage
             uClient.close()# closing the connection to the web server
-            Swiggy_html = bs(SwiggyPage, "html.parser") # parsing the webpage as HTML
-            bigboxes = Swiggy_html.findAll("div", {"class": "s-item__wrapper clearfix"}) # seacrhing for appropriate tag to redirect to the product link
+            EBAY_html = bs(EbayPage, "html.parser") # parsing the webpage as HTML
+            bigboxes = EBAY_html.findAll("div", {"class": "s-item__wrapper clearfix"}) # seacrhing for appropriate tag to redirect to the product link
             box = bigboxes[1] #  taking the first iteration (for demo)
             productLink =  box.div.div.a['href']
             prodRes  = requests.get(productLink)
@@ -64,6 +64,7 @@ def index():
                 mydict = {"Product": searchString, "Name": name, "Rating": rating, "CommentHead": commentHead,
                           "Comment": custComment}
                 reviews.append(mydict)
+                print(reviews)
             return render_template('results.html', reviews=reviews) # showing the review to the user
         except:
             return 'something is wrong in the process'

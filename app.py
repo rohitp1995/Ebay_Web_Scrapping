@@ -22,11 +22,11 @@ def index():
             uClient.close()# closing the connection to the web server
             EBAY_html = bs(EbayPage, "html.parser") # parsing the webpage as HTML
             bigboxes = EBAY_html.findAll("div", {"class": "s-item__wrapper clearfix"}) # seacrhing for appropriate tag to redirect to the product link
-            box = bigboxes[1] #  taking the first iteration (for demo)
+            box = bigboxes[2] #  taking the first iteration (for demo)
             productLink =  box.div.div.a['href']
             prodRes  = requests.get(productLink)
             prod_html = bs(prodRes.text, "html.parser") # parsing the product page as HTML
-            commentboxes = prod_html.findAll('div', {'class':' ebay-review-section'}) # finding the HTML section containing the customer comments
+            commentboxes = prod_html.findAll('div', {'class':'ebay-review-section'}) # finding the HTML section containing the customer comments
 
             reviews = [] # initializing an empty list for reviews
             #  iterating over the comment section to get the details of customer and their comments
@@ -64,7 +64,6 @@ def index():
                 mydict = {"Product": searchString, "Name": name, "Rating": rating, "CommentHead": commentHead,
                           "Comment": custComment}
                 reviews.append(mydict)
-                print(reviews)
             return render_template('results.html', reviews=reviews) # showing the review to the user
         except:
             return 'something is wrong in the process'

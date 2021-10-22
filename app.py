@@ -1,7 +1,25 @@
-from flask import Flask, render_template, request,jsonify
-import requests
-from bs4 import BeautifulSoup as bs
-from urllib.request import urlopen as uReq
+# doing necessary imports
+import threading
+import io
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+
+import logging
+from flask import Flask, render_template, request, jsonify, Response, url_for, redirect
+from flask_cors import CORS, cross_origin
+import pandas as pd
+from mongoDBOperations import MongoDBManagement
+from FlipkratScrapping import FlipkratScrapper
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+
+logging_str = "[%(asctime)s: %(levelname)s: %(module)s] %(message)s"
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+logging.basicConfig(filename= os.path.join(log_dir,"Scrapper.log"),level=logging.INFO, format=logging_str, filemode="a")
+
 
 app = Flask(__name__)  # initialising the flask app with the name 'app'
 
